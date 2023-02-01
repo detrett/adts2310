@@ -105,29 +105,59 @@ public class EnhetstestAdminKontoController {
         List<Transaksjon> transaksjonList = new ArrayList<>() {};
         Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto",
                 "NOK", transaksjonList);
-
+        //2. Fake null return, store expected string result
         when(sjekk.loggetInn()).thenReturn(null);
         String retur = "Ikke innlogget";
 
         //ACT
+        //3. Run registrerKonto method and store actual result
         String resultat = adminController.registrerKonto(konto1);
 
         //ASSERT
+        //4. Compare expected result vs actual result
         assertEquals(retur, resultat);
     }
 
     @Test
     public void endreKonto() {
-        //arrange
-        //act
-        //assert
+        //ARRANGE
+        //1. Create transaction list + account.
+        List<Transaksjon> transaksjonList = new ArrayList<>() {};
+        Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto",
+                "NOK", transaksjonList);
+        //2. Fake sjekk.loggetInn() and repository.endreKonto() return values.
+        String personnummer = "04081516234";
+        when(sjekk.loggetInn()).thenReturn(personnummer);
+        String retur = "OK";
+        when(repository.endreKonto(konto1)).thenReturn(retur);
+
+        //ACT
+        //3. Run method and store result
+        String resultat = adminController.endreKonto(konto1);
+
+        //ASSERT
+        //4. Compare expected result and actual result
+        assertEquals(retur, resultat);
     }
 
     @Test
     public void endreKontoFeil() {
-        //arrange
-        //act
-        //assert
+        //ARRANGE
+        //1. Create transaction list + account.
+        List<Transaksjon> transaksjonList = new ArrayList<>() {};
+        Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto",
+                "NOK", transaksjonList);
+        //2. Fake null return, store expected string result
+        when(sjekk.loggetInn()).thenReturn(null);
+        String retur = "Ikke innlogget";
+
+        //ACT
+        //3.Run method and store result
+        String resultat = adminController.endreKonto(konto1);
+
+        //ASSERT
+        //4. Compare expected result and actual result
+        assertEquals(retur, resultat);
     }
 
     @Test
