@@ -162,15 +162,40 @@ public class EnhetstestAdminKontoController {
 
     @Test
     public void slettKonto() {
-        //arrange
-        //act
-        //assert
+        //ARRANGE
+        //1. Create kontonummer in a string.
+        String kontonummer = "0123.45.67890";
+        //2. Fake sjekk.loggetInn() and repository.slettKonto() return values.
+        String personnummer = "04081516234";
+        when(sjekk.loggetInn()).thenReturn(personnummer);
+        String retur = "OK";
+        when(repository.slettKonto(kontonummer)).thenReturn(retur);
+
+        //ACT
+        //3. Run controller method, store result
+        String resultat = adminController.slettKonto(kontonummer);
+
+        //ASSERT
+        //4. Compare expected result vs actual result
+        assertEquals(retur, resultat);
+
     }
 
     @Test
     public void slettKontoFeil() {
-        //arrange
-        //act
-        //assert
+        //ARRANGE
+        //1. Create kontonummer in a string.
+        String kontonummer = "0123.45.67890";
+        //2. Fake sjekk.loggetInn() and store expected string return values.
+        when(sjekk.loggetInn()).thenReturn(null);
+        String retur = "Ikke innlogget";
+
+        //ACT
+        //3. Run controller method and save result
+        String resultat = adminController.slettKonto(kontonummer);
+
+        //ASSERT
+        //4. Compare results
+        assertEquals(retur, resultat);
     }
 }
