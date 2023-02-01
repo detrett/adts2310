@@ -3,6 +3,17 @@
 
 -- --------------------------------------------------------
 --
+-- The following code allows us to do integration testing without modifying the database
+--
+DROP TABLE IF EXISTS `Konto`;
+DROP TABLE IF EXISTS `Kunde`;
+DROP TABLE IF EXISTS `Poststed`;
+DROP TABLE IF EXISTS `Transaksjon`;
+
+
+
+-- --------------------------------------------------------
+--
 -- Tabellstruktur for tabell `Konto`
 --
 
