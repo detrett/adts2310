@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import oslomet.testing.API.AdminKontoController;
-import oslomet.testing.API.BankController;
 import oslomet.testing.DAL.AdminRepository;
 import oslomet.testing.Models.Konto;
 import oslomet.testing.Models.Kunde;
@@ -41,7 +40,8 @@ public class EnhetstestAdminKontoController {
         //ARRANGE
         //1. Create a List with an account
         List<Transaksjon> transaksjonList = new ArrayList<>() {};
-        Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto", "NOK", transaksjonList);
+        Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto",
+                "NOK", transaksjonList);
         List<Konto> kontoList = new ArrayList<>() {};
         kontoList.add(konto1);
         //2. When the method sjekk.loggetInn() gets called within hentAlleKonti() return the string below.
@@ -76,16 +76,44 @@ public class EnhetstestAdminKontoController {
 
     @Test
     public void registrerKonto() {
-        //arrange
-        //act
-        //assert
+        //ARRANGE
+        //1. Create transaction list + account.
+        List<Transaksjon> transaksjonList = new ArrayList<>() {};
+        Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto",
+                "NOK", transaksjonList);
+
+        //2. Fake sjekk.loggetInn() and repository.registrerKonto() return values.
+        String personnummer = "04081516234";
+        when(sjekk.loggetInn()).thenReturn(personnummer);
+        String retur = "OK";
+        when(repository.registrerKonto(konto1)).thenReturn(retur);
+
+        //ACT
+        //3. Call method and store result.
+        String result = adminController.registrerKonto(konto1);
+
+        //ASSERT
+        //4. Compare return values to assert validity of the test.
+        assertEquals(retur, result);
+
     }
 
     @Test
     public void registrerKontoFeil() {
-        //arrange
-        //act
-        //assert
+        //ARRANGE
+        //1. Create transaction list + account.
+        List<Transaksjon> transaksjonList = new ArrayList<>() {};
+        Konto konto1 = new Konto("04081516234", "0123.45.67890", 30000, "Sparekonto",
+                "NOK", transaksjonList);
+
+        when(sjekk.loggetInn()).thenReturn(null);
+        String retur = "Ikke innlogget";
+
+        //ACT
+        String resultat = adminController.registrerKonto(konto1);
+
+        //ASSERT
+        assertEquals(retur, resultat);
     }
 
     @Test
